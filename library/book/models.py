@@ -2,6 +2,14 @@ from django.db import models
 from django.utils import timezone
 
 
+class Author(models.Model):
+    name = models.CharField(max_length=250)
+
+
+class Price(models.Model):
+    price = models.BigIntegerField(max_length=None)
+
+
 class Book(models.Model):
     class Category(models.TextChoices):
         Biography = 'B', 'Biography'
@@ -18,6 +26,19 @@ class Book(models.Model):
     name = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250)
 
+    #Relation field
+    author = models.ForeignKey(
+        Author,
+        on_delete=models.CASCADE, 
+        null=True,
+        related_name='author_books',
+    )
+    price = models.ForeignKey(
+        Price,
+        on_delete=models.CASCADE, 
+        null=True,
+        related_name='book_price',
+    )
 
     #Date field
     publish = models.DateTimeField(default=timezone.now)

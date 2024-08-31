@@ -5,9 +5,15 @@ from django.utils import timezone
 class Author(models.Model):
     name = models.CharField(max_length=250)
 
+    def __str__ (self):
+        return self.name
+
 
 class Price(models.Model):
     price = models.BigIntegerField(max_length=None)
+
+    def __str__ (self):
+        return self.price
 
 
 class Book(models.Model):
@@ -41,9 +47,8 @@ class Book(models.Model):
     )
 
     #Date field
-    publish = models.DateTimeField(default=timezone.now)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    published_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     #Choice field
     category = models.CharField(
@@ -54,10 +59,10 @@ class Book(models.Model):
 
     class  Meta:
         ordering = [
-            '-publish',
+            '-published_at',
         ]
         indexes = [
-            models.Index(fields=['-publish',]),
+            models.Index(fields=['-published_at',]),
         ]
 
 

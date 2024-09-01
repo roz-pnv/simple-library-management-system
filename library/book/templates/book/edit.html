@@ -3,7 +3,7 @@
 {% block head %}<h2>Edit Book: {{ form.instance.name }}</h2>{% endblock %}
 
 {% block content %}
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST">
         {% csrf_token %}
 
         {{ form.as_p }}

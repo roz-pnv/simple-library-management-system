@@ -46,17 +46,17 @@ class AddBookForm(forms.ModelForm):
     
 
 class EditBookForm(forms.ModelForm):
-    author = forms.CharField(label='Author Name', max_length=250)
-    price = forms.IntegerField(label='Price', max_value=None)
+    author_name = forms.CharField(label='Author Name', max_length=250)
+    price_amount = forms.CharField(label='Price', max_length=None)
 
     class Meta:
         model = Book
-        fields = ['name', 'author', 'price', 'category']
+        fields = ['name', 'author_name', 'price_amount', 'category']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance:
             self.fields['name'].initial = self.instance.name 
-            self.fields['author'].initial = self.instance.author.name if self.instance.author else ''
-            self.fields['price'].initial = self.instance.price.price if self.instance.price else ''
+            self.fields['author_name'].initial = self.instance.author.name if self.instance.author else ''
+            self.fields['price_amount'].initial = self.instance.price.price if self.instance.price else ''
             self.fields['category'].initial = self.instance.category

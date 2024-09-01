@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.http import HttpResponse, Http404
 from .models import *
 from .forms import AddBookForm, EditBookForm
@@ -50,19 +50,19 @@ def edit_book(request, id):
     if request.method == 'POST':
         form = EditBookForm(request.POST, instance=book)
         if form.is_valid():
-            new_author_name = form.cleaned_data['author']
-            new_price_value = form.cleaned_data['price']
+            new_author_name = form.cleaned_data['author_name']
+            author, _ = Author.objects.get_or_create(name=new_author_name)
 
-            author, created = Author.objects.get_or_create(name=new_author_name)
+            new_price_value = form.cleaned_data['price_amount']
+            price, _ = Price.objects.get_or_create(price=int(new_price_value))
 
-            price, created = Price.objects.get_or_create(price=new_price_value)
-
-            book.name = form.changed_data['name']
             book.author = author
             book.price = price
-            book.category = form.changed_data['category']
+            book.name = form.cleaned_data['name']
+            book.category = form.cleaned_data['category']
 
             book.save()
+            return HttpResponseRedirect("/books")
     else:
         form = EditBookForm(instance=book)
 
@@ -72,8 +72,18 @@ def edit_book(request, id):
     
 
 
-def delete_book(request, pk):
-    pass
+def delete_book(request, id):
+    context = {}
+
+    book = get_object_or_404(Book, id=id)
+
+    if request.method == "POST":
+        book.delete()
+        return HttpResponseRedirect("/books")
+        
+    
+    return render(request, 'book/delete.html', context)
+
 
 
 def filter_books(request):

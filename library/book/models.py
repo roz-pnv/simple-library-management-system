@@ -47,7 +47,6 @@ class Book(models.Model):
 
     #Date field
     published_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     #Choice field
     category = models.CharField(

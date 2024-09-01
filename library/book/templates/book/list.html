@@ -3,6 +3,19 @@
 {% block head %}<h2>Book List</h2>{% endblock %}
 
 {% block content %}
+    <form method="get" action="{% url 'book:filter_books' %}">
+        <div>
+            <label for="price">Filter by Price:</label>
+            <input type="number" id="price" name="price" placeholder="price"/>
+        </div>
+        <div>
+            <label for="date">Filter by Publication Date (year):</label>
+            <input type="number" id="date" name="date" placeholder="year"/>
+        </div>
+        <button type="submit">
+            <i class="fa fa_filter"></i> Filter
+        </button>
+    </form>
     {% for book in books %}
         <h3>
             <a href="{% url 'book:book_detail' book.id %}">{{ book.name }}</a>

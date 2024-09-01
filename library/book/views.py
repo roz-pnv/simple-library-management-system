@@ -81,13 +81,20 @@ def delete_book(request, id):
         book.delete()
         return HttpResponseRedirect("/books")
         
-    
     return render(request, 'book/delete.html', context)
 
 
-
 def filter_books(request):
-    pass
+    price = request.GET.get('price', None)
+    published_year = request.GET.get('date', None)
+    books = Book.objects.all()
+
+    if price:
+        books = books.filter(price__price__lte=int(price))
+    if published_year:
+        books = books.filter(published_at__year=int(published_year))
+
+    return render(request, 'book/list.html', {'books':books})
 
 
 def delete_filtered_books(request):

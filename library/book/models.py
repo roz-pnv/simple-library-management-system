@@ -13,7 +13,7 @@ class Price(models.Model):
     price = models.BigIntegerField(max_length=None)
 
     def __str__ (self):
-        return self.price
+        return str(self.price)
 
 
 class Book(models.Model):
@@ -30,7 +30,6 @@ class Book(models.Model):
 
     #Data field
     name = models.CharField(max_length=250)
-    slug = models.SlugField(max_length=250)
 
     #Relation field
     author = models.ForeignKey(

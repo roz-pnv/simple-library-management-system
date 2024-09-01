@@ -1,7 +1,7 @@
 from django import forms
 from .models import *
 
-class BookForm(forms.ModelForm):
+class AddBookForm(forms.ModelForm):
     author = forms.ModelChoiceField(
         queryset=Author.objects.all(),
         label='Author',
@@ -43,3 +43,20 @@ class BookForm(forms.ModelForm):
             raise forms.ValidationError("Please either select an existing price or enter a new price, not both.")
 
         return cleaned_data
+    
+
+class EditBookForm(forms.ModelForm):
+    author = forms.CharField(label='Author Name', max_length=250)
+    price = forms.IntegerField(label='Price', max_value=None)
+
+    class Meta:
+        model = Book
+        fields = ['name', 'author', 'price', 'category']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance:
+            self.fields['name'].initial = self.instance.name 
+            self.fields['author'].initial = self.instance.author.name if self.instance.author else ''
+            self.fields['price'].initial = self.instance.price.price if self.instance.price else ''
+            self.fields['category'].initial = self.instance.category

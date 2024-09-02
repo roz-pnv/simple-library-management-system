@@ -110,7 +110,12 @@ def filter_books(request):
     if published_year:
         books = books.filter(published_at__year=int(published_year))
 
-    return render(request, 'book/filter.html', {'books':books})
+    context = {
+        'books':books,
+        'filtered_books': books.exists()
+    }
+
+    return render(request, 'book/list.html', context)
 
 
 def delete_filtered_books(request):
@@ -119,7 +124,7 @@ def delete_filtered_books(request):
     books = Book.objects.all()
 
     if price:
-        books = books.filter(price__price__lte=int(price))
+        books = books.filter(price__price=int(price))
     if published_year:
         books = books.filter(published_at__year=int(published_year))
 
@@ -129,5 +134,5 @@ def delete_filtered_books(request):
         return HttpResponseRedirect("/books")
         
 
-    return render(request, 'book/delete.html', {'books':books})
+    return render(request, 'book/deletefilter.html', {'books':books})
 

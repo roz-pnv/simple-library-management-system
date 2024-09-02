@@ -35,4 +35,11 @@
 
     <hr>
     <h3><a href="{% url 'book:add_book' %}">add book</a></h3>
+    {% if filtered_books %}
+        <form method="get" action="{% url 'book:delete_filtered_books' %}">
+            <input type="hidden" name="price" value="{{ request.GET.price }}">
+            <input type="hidden" name="publication_date" value="{{ request.GET.publication_date }}">
+            <button type="submit">delete filter books</button>
+        </form>
+    {% endif %}
 {% endblock %}

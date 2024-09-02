@@ -106,7 +106,7 @@ def filter_books(request):
     books = Book.objects.all()
 
     if price:
-        books = books.filter(price__price__lte=int(price))
+        books = books.filter(price__price=int(price))
     if published_year:
         books = books.filter(published_at__year=int(published_year))
 

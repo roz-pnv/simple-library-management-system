@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
 from django.http import HttpResponse, Http404
 from .models import *
 from .forms import AddBookForm, EditBookForm
@@ -14,7 +14,23 @@ def book_detail(request, id):
 
 
 def search_books(request):
-    pass
+    query = request.GET.get('query', None)
+
+    if query:
+
+        book_name_search = Book.objects.filter(name__icontains= query)
+        if book_name_search.exists():
+            return render(request, 'book/list.html', {'books':book_name_search})
+        
+        try:
+            author = Author.objects.get(name__icontains=query)
+            auther_name_search = Book.objects.filter(author=author)
+            return render(request, 'book/list.html', {'books':auther_name_search})
+        except Author.DoesNotExist:
+            return render(request, 'book/list.html', {'books':[]})
+
+    return render(request, 'book/list.html', {'books':Book.objects.all()})
+
 
 
 def add_book(request):

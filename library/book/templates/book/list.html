@@ -3,6 +3,15 @@
 {% block head %}<h2>Book List</h2>{% endblock %}
 
 {% block content %}
+    <form method="get" action="{% url 'book:search_books' %}">
+        <div>
+            <label for="query">Search:</label>
+            <input type="text" id="query" name="query" placeholder="Search by name or author" value="{{ request.GET.query }}"/>
+        </div>
+        <button type="submit">
+            <i class="fa fa_search"></i> Search
+        </button>
+    </form>
     <form method="get" action="{% url 'book:filter_books' %}">
         <div>
             <label for="price">Filter by Price:</label>
